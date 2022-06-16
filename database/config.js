@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
-//user: angular_avanzado
-//passwoard: oFZpdO7RUM1Y6aiE
+
 const dbConnection = async () => {
     
     try {
-        await mongoose.connect( 'mongodb+srv://angular_avanzado:oFZpdO7RUM1Y6aiE@cluster0.wrj2u.mongodb.net/hospitaldb', {
+        await mongoose.connect( process.env.DB_CNN, {
 
         });
         console.log("DB Online");
