@@ -1,15 +1,20 @@
-const express = require('express');
 require('dotenv').config(); //instalacion "npm i dotenv"
+
+const express = require('express');
+const cors = require('cors'); //instalacion "npm i cors"
 
 const { dbConnection } = require('./database/config');
 
 //Crear el servidor express
 const app = express();
 
+//Configurar CORS
+app.use( cors() );
+
 //Base de datos
 dbConnection();
 
-//Aqui muestro todas las variables de entorno existentes y se conecta a mi .env
+//Aqui muestro todas las variables de entorno existentes y se conecta a mi .env (ocupa la instalacion de dotenv)
 //console.log( process.env );
 
 //Rutas
