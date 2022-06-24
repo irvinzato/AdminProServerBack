@@ -4,7 +4,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator'); //"npm i express-validator" para hacer uso de esta importacion
 const { validarCampos } = require('../middlewares/validar.campos');
-const { getUsuarios, crearUsuarios, actualizarUsuario } = require('../controllers/usuarios');
+const { getUsuarios, crearUsuarios, actualizarUsuario, borrarUsuario } = require('../controllers/usuarios');
 
 const router = Router();
 
@@ -26,8 +26,13 @@ router.post(
         check('nombre', 'El nombre es obligatorio').not().isEmpty(),
         check('email', 'El email es obligatorio').isEmail(),
         check('rol', 'El rol es obligatorio').not().isEmpty(),
+        validarCampos
     ],
     actualizarUsuario 
  );
+
+ router.delete( '/:id',
+    borrarUsuario
+);
 
 module.exports = router;

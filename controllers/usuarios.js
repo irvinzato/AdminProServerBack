@@ -96,9 +96,42 @@ const actualizarUsuario = async (req, res = response) => {
     }
 }
 
+const borrarUsuario = async ( req, res = response ) => {
+
+    const uid = req.params.id;
+
+    try {
+
+        const usuarioDB = await Usuario.findById( uid );
+
+        if( !usuarioDB ) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No se encontro un usuario con ese id'
+            });
+        }
+
+        //NORMALMENTE NO VOY A QUERER BORRAR, SOLO DESACTIVAR
+        await Usuario.findByIdAndDelete( uid );
+
+        res.json({
+            ok:true,
+            msg: 'Usuario eliminado',
+            uid
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, hable con el administrador'
+        });
+    }
+
+}
 
 module.exports = {
     getUsuarios,
     crearUsuarios,
-    actualizarUsuario
+    actualizarUsuario,
+    borrarUsuario
 }
