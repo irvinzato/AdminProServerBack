@@ -30,7 +30,8 @@ const UsuarioSchema = Schema({
 
 //PARA MODIFICAR MI JSON QUE RESPONDERE EN LA PETICION
 UsuarioSchema.method('toJSON', function() {
-    const { __v, _id, ...object } = this.toObject();
+    //Todo lo que esta entre { } es lo que quito, para no enviarlo como respuesta
+    const { __v, _id, password, ...object } = this.toObject();
     object.uid = _id;
 
     return object;
