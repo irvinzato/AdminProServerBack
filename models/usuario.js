@@ -10,7 +10,7 @@ const UsuarioSchema = Schema({
         require: true,
         unique: true
     },
-    passwoard: {
+    password: {
         type: String,
         require: true
     },
