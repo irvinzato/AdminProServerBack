@@ -10,7 +10,7 @@ const UsuarioSchema = Schema({
         require: true,
         unique: true
     },
-    passwoard: {
+    password: {
         type: String,
         require: true
     },
@@ -26,6 +26,15 @@ const UsuarioSchema = Schema({
         type: Boolean,
         default: false
     }
+});
+
+//PARA MODIFICAR MI JSON QUE RESPONDERE EN LA PETICION
+UsuarioSchema.method('toJSON', function() {
+    //Todo lo que esta entre { } es lo que quito, para no enviarlo como respuesta
+    const { __v, _id, password, ...object } = this.toObject();
+    object.uid = _id;
+
+    return object;
 });
 
 module.exports = model( 'Usuario', UsuarioSchema );
