@@ -6,13 +6,31 @@ const { generarJWT } = require('../helpers/jwt');
 
 const getUsuarios = async (req, res) => {
 
-    const usuarios = await Usuario.find({}, 'nombre email rol google');
+    //De esta manera saco el valor de la url y si no viene que tome 0
+    const desde = Number(req.query.desde) || 0;
+
+    //Con "skip" le digo que se salte los primeros "desde" y da ese registro en adelante
+    //con "limit" le digo el limite de registros a mostrar, podria recibirlo o ponerlo fijo, asi me mostrara registros "desde" hasta mi limite
+    const usuarios = await Usuario.find({}, 'nombre email rol google')
+                                  .skip( desde )
+                                  .limit( 5 );
+
+    //De esta manera se el total de registros en mi BD
+    const totalRegistros = await Usuario.count();
+
+    /* ESTA ES OTRA MANERA DE EJECUTAR LAS PROMESAS Y DESESTRUCUTRAR LOS VALORES DE CADA UNA EN UN ARREGLO
+    const [ usuarios, totalRegistros ] = await Promise.all([
+        Usuario.find({}, 'nombre email rol google')
+                .skip( desde )
+                .limit( 5 ),
+        Usuario.count()
+    ]); */
 
     res.json({
         ok: true,
         usuarios,
-        uid: req.uid,
-        msg: 'GET USUARIOS'
+        totalRegistros,
+        msg: 'GET usuarios hecho'
     });
 }
 
