@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const HospitalSchema = Schema({
+const MedicoSchema = Schema({
     nombre: {
         type: String,
         require: true
@@ -11,14 +11,18 @@ const HospitalSchema = Schema({
     usuario: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
+    },
+    hospital: {
+        type: Schema.Types.ObjectId,
+        ref: 'Hospital'
     }
-}, { collection: 'hospitales' }); //Asi no se creara mi BD como "Hospitals", sera "hospitales"
+}, { collection: 'medicos' }); //Asi no se creara mi BD como "Hospitals", sera "hospitales"
 
 //PARA MODIFICAR MI JSON QUE RESPONDERE EN LA PETICION
-HospitalSchema.method('toJSON', function() {
+MedicoSchema.method('toJSON', function() {
     //Todo lo que esta entre { } es lo que quito, para no enviarlo como respuesta
     const { __v, ...object } = this.toObject();
     return object;
 });
 
-module.exports = model( 'Hospital', HospitalSchema );
+module.exports = model( 'Medico', MedicoSchema );
