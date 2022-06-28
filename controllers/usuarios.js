@@ -2,6 +2,7 @@ const { response } = require('express');
 const { validationResult } = require('express-validator');//Como modularice mi aplicacion, esto lo pase a su middleware
 const bcrypt = require('bcryptjs'); //"npm i bcryptjs" pasa hacer uso de libreria(encripta contraseñas)
 const Usuario = require('../models/usuario');
+const { generarJWT } = require('../helpers/jwt');
 
 const getUsuarios = async (req, res) => {
 
@@ -10,6 +11,7 @@ const getUsuarios = async (req, res) => {
     res.json({
         ok: true,
         usuarios,
+        uid: req.uid,
         msg: 'GET USUARIOS'
     });
 }
@@ -34,10 +36,14 @@ const crearUsuarios = async (req, res = response) => {
         //Guardo usuario
         await usuario.save();
 
+        //Generación del TOKEN - JWT
+        const token = await generarJWT( usuario._id );
+
         res.json({
             ok: true,
             msg: 'Creando Usuario',
-            usuario
+            usuario,
+            token
         });      
     } catch (error) {
         console.log(error);
