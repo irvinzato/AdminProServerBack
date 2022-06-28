@@ -32,6 +32,46 @@ const getTodo = async (req, res = response) => {
 
 }
 
+const getColeccionEspecifica = async (req, res = response) => {
+
+    const nombreTabla    = req.params.tabla;
+    const nombreBusqueda = req.params.busqueda;
+    const regex          = new RegExp( nombreBusqueda, 'i' );
+
+    let data = [];
+
+    switch ( nombreTabla ) {
+        case 'medicos':
+            data = await Medico.find({ nombre: regex })
+                               .populate( 'usuario', 'nombre img' )
+                               .populate( 'hospital', 'nombre img' );
+        break;
+
+        case 'hospitales':
+            data = await Hospital.find({ nombre: regex })
+                                 .populate( 'usuario', 'nombre img' );
+        break;
+        
+        case 'usuarios':
+            data = await Usuario.find({ nombre: regex });
+        break;
+    
+        default:
+            return res.status(400).json({
+                ok: false,
+                msg: 'La tabla tiene que ser "medicos","hospitales" o "usuarios"'
+            });
+    }
+    res.json({
+        ok:true,
+        resultados: data,
+        nombreTabla,
+        nombreBusqueda,
+        msj: 'Busqueda especifica por coleccion'
+    });
+}
+
 module.exports = {
-    getTodo
+    getTodo,
+    getColeccionEspecifica
 }
