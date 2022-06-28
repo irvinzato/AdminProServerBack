@@ -2,10 +2,15 @@ const { response } = require('express');
 const Hospital = require('../models/hospital');
 
 
-const getHospitales = (req, res = response) => {
+const getHospitales = async (req, res = response) => {
+
+    const hospitales = await Hospital.find()
+                                    .populate('usuario', 'nombre img');  //De esta manera en el campo "usuario" obtengo ademas del id, el nombre de quien lo creo y puedo añadir los campos que quiera
+
     res.json({
         ok: true,
-        msg: 'getHospitales'
+        hospitales,
+        msg: 'Petición correcta'
     });
 }
 

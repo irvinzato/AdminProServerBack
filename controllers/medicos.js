@@ -2,11 +2,25 @@ const { response } = require('express');
 const Medico = require('../models/medico');
 
 
-const getMedicos = (req, res = response) => {
-    res.json({
-        ok: true,
-        msg: 'getMedicos'
-    });
+const getMedicos = async (req, res = response) => {
+
+    try {              
+        const medicos = await Medico.find() //Con el populate puedo obtener mas campos para esa variable
+                                    .populate('usuario', 'nombre img')
+                                    .populate('hospital', 'nombre img');
+
+        res.json({
+            ok: true,
+            medicos,
+            msg: 'Petición exitosa'
+        });
+    } catch (error) {
+        console.log("Error en getMedicos ", error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, hable con el administrador'
+        });
+    }
 }
 
 const crearMedico = async (req, res = response) => {
