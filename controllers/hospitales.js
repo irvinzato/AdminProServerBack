@@ -22,7 +22,7 @@ const crearHospital = async (req, res = response) => {
         res.json({
             ok: true,
             hospital: hospitalDB,
-            msg: 'crearHospitales'
+            msg: 'creado de hospital exitoso'
         });
     } catch (error) {
         console.log("Error en Post Hospitales ", error);
