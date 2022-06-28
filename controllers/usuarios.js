@@ -18,7 +18,7 @@ const getUsuarios = async (req, res) => {
     //De esta manera se el total de registros en mi BD
     const totalRegistros = await Usuario.count();
 
-    /* ESTA ES OTRA MANERA DE EJECUTAR LAS PROMESAS Y DESESTRUCUTRAR LOS VALORES DE CADA UNA EN UN ARREGLO
+    /* ESTA ES OTRA MANERA DE EJECUTAR LAS PROMESAS Y DESESTRUCUTRAR LOS VALORES DE CADA UNA EN UN ARREGLO, PUEDE SER MAS EFICIENTE
     const [ usuarios, totalRegistros ] = await Promise.all([
         Usuario.find({}, 'nombre email rol google')
                 .skip( desde )
