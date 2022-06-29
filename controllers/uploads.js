@@ -1,3 +1,6 @@
+const path = require('path');
+const fs = require('fs');
+
 const { response } = require('express');
 const { v4: uuidv4 } = require('uuid'); //Para utilizarle instale "npm install uuid"
 const { actualizarImagen } = require('../helpers/actualizar-imagen');
@@ -73,6 +76,24 @@ const subirArchivo = async (req, res = response) => {
 }
 
 
+const retornaImagen = async (req, res = response) => {
+
+    const tipo = req.params.tipo;
+    const imagen = req.params.foto;
+
+    const pathImg = path.join( __dirname, `../uploads/${ tipo }/${ imagen }` );
+
+    //Para verificar si el path existe
+    if( fs.existsSync( pathImg ) ) {
+        res.sendFile( pathImg );
+    } else {
+        const pathImg = path.join( __dirname, `../uploads/imagenNoEncontrada.png` );
+        res.sendFile( pathImg );
+    }
+}
+
+
 module.exports = {
-    subirArchivo
+    subirArchivo,
+    retornaImagen
 }

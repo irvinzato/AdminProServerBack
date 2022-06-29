@@ -5,7 +5,7 @@ const { Router } = require('express');
 const fileUpload = require('express-fileupload'); //Para ocuparlo se usa ""npm i express-fileupload""
 
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { subirArchivo } = require('../controllers/uploads');
+const { subirArchivo, retornaImagen } = require('../controllers/uploads');
 
 
 const router = Router();
@@ -18,6 +18,13 @@ router.put( '/:tipo/:id',
         validarJWT
     ],
     subirArchivo
+);
+
+router.get( '/:tipo/:foto', 
+    [ 
+      
+    ],
+    retornaImagen
 );
 
 module.exports = router;
