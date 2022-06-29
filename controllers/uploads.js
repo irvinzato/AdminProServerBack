@@ -1,5 +1,6 @@
 const { response } = require('express');
 const { v4: uuidv4 } = require('uuid'); //Para utilizarle instale "npm install uuid"
+const { actualizarImagen } = require('../helpers/actualizar-imagen');
 
 //En mi carpeta "uploads" es donde colocare la imagen respectivamente
 //Utilice instalar en mi proyecto "npm i express-fileupload"
@@ -58,6 +59,11 @@ const subirArchivo = async (req, res = response) => {
                 msg: 'Error al guardar la imagen en su path'
             });
         }
+
+        //Actualizar base de datos(DB)
+        //Lo hago dentro de mis helpers por que este codigo ya crecio mucho
+        actualizarImagen( tipo, id, nombreArchivo );
+
         res.json({
             ok: true,
             nombreArchivo,
