@@ -11,11 +11,11 @@ const getUsuarios = async (req, res) => {
 
     //Con "skip" le digo que se salte los primeros "desde" y da ese registro en adelante
     //con "limit" le digo el limite de registros a mostrar, podria recibirlo o ponerlo fijo, asi me mostrara registros "desde" hasta mi limite
-    const usuarios = await Usuario.find({}, 'nombre email rol google')
+    const usuarios = await Usuario.find({}, 'nombre email rol google img')
                                   .skip( desde )
                                   .limit( 5 );
 
-    //De esta manera se el total de registros en mi BD
+    //De esta manera se el total de registros en mi BD "count()" o "countDocuments()"
     const totalRegistros = await Usuario.count();
 
     /* ESTA ES OTRA MANERA DE EJECUTAR LAS PROMESAS Y DESESTRUCUTRAR LOS VALORES DE CADA UNA EN UN ARREGLO, PUEDE SER MAS EFICIENTE
