@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs'); //"npm i bcryptjs" pasa hacer uso de libreri
 
 const Usuario = require('../models/usuario');
 const { generarJWT } = require('../helpers/jwt');
+const { googleVerify } = require('../helpers/google-verify');
 
 const login = async( req, res = response ) => {
 
@@ -47,11 +48,26 @@ const login = async( req, res = response ) => {
 
 const googleLogin = async( req, res = response ) => {
 
-    res.json({
-        ok: true,
-        msg: 'La peticion trae en body ' + req.body.token
-    });
+    try {
+        /* De esta variable podria desestructurar solo lo que me interesa
+        const googleUser = await googleVerify( req.body.token ); */
+        const { email, name, picture } = await googleVerify( req.body.token );
 
+        res.json({
+            ok: true,
+            email,
+            name,
+            picture,
+            msg: 'Login con Google exitoso'
+        });
+        
+    } catch (error) {
+        console.log("Error de googleLogin ", error );
+        res.status(400).json({
+            ok: false,
+            msg: 'El Token de Google es correcto '
+        });
+    }
 }
 
 module.exports = {
