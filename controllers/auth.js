@@ -45,6 +45,16 @@ const login = async( req, res = response ) => {
     }
 }
 
+const googleLogin = async( req, res = response ) => {
+
+    res.json({
+        ok: true,
+        msg: 'La peticion trae en body ' + req.body.token
+    });
+
+}
+
 module.exports = {
-    login
+    login,
+    googleLogin
 }
