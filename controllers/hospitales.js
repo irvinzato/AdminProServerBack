@@ -39,11 +39,51 @@ const crearHospital = async (req, res = response) => {
 
 }
 
-const actualizarHospital = (req, res = response) => {
-    res.json({
-        ok: true,
-        msg: 'actualizarHospitales'
-    });
+const actualizarHospital = async (req, res = response) => {
+    //obtengo el ID que traigo en la url de la peticion
+    const hospitalId = req.params.id;
+    //Esta "req.uid" la obtuve de mi "validar-jwt", por ello puedo rescatar el id del usuario
+    const uid = req.uid;
+
+    try {
+        
+        const hospitalDB = await Hospital.findById(hospitalId);
+
+        if ( !hospitalDB ) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No se encontro hospital con ese id en la base de datos'
+            });
+        }
+        
+        //En este punto si encontre hospital asi que actualizo valores
+        //Esta solucion se ve bien cuando se actualiza un valor pero si queremos actualizar mas queda mejor el siguiente comentario
+        hospitalDB.nombre = req.body.nombre;
+
+        /*Esta es otra manera de obtener todos los valores que vienen en la "req.body" y almacenar los cambios
+        const cambiosHospital = {
+            ...req.body,
+            usuario: uid
+        }       
+        */
+
+        const hospitalActualizado = await Hospital.findByIdAndUpdate( hospitalId, hospitalDB, {new: true} );
+
+        res.json({
+            ok: true,
+            hospitalId,
+            uid,
+            hospitalActualizado,
+            msg: 'actualizarHospitales'
+        });
+
+    } catch (error) {
+        console.log("Error al actualizar hospital ", error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado al actualizar hospital, hable con el administrador'
+        });
+    }
 }
 
 const borrarHospital = (req, res = response) => {
