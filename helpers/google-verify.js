@@ -10,9 +10,7 @@ async function googleVerify( token ) {
       //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
   });
   const payload = ticket.getPayload();
-  console.log("Payload en funcion de google verify ", payload);
-  // If request specified a G Suite domain:
-  // const domain = payload['hd'];
+  //console.log("Payload en funcion de google verify ", payload);
 
   return payload;
 }

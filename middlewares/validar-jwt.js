@@ -4,7 +4,7 @@ const validarJWT = (req, res, next) => {
 
     //Leer token(Viene en la request, especificamente en los headers)
     const token = req.header('x-token');
-    console.log("En el header trae el token ", token);
+    console.log("En el header trae el x-token ", token);
     if( !token ) {
         return res.status(401).json({
             ok: false,
