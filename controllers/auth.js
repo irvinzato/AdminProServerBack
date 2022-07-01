@@ -53,11 +53,35 @@ const googleLogin = async( req, res = response ) => {
         const googleUser = await googleVerify( req.body.token ); */
         const { email, name, picture } = await googleVerify( req.body.token );
 
+        const usuarioDB = await Usuario.findOne({ email });
+        let usuario;
+
+        if( !usuarioDB ) {
+            usuario = new Usuario({
+                nombre: name,
+                email,
+                password: '@@@',
+                img: picture,
+                google: true
+            });
+        } else {
+            usuario = usuarioDB;
+            usuario.google = true;
+            //Con esto el usuario ya no podria autenticarse con las credenciales normales, depende que queremos hacer
+            //usuario.password = '@@';
+        }
+        //Guardo usuario
+        await usuario.save();
+
+        //Generación del TOKEN - JWT
+        const token = await generarJWT( usuario.id );
+
         res.json({
             ok: true,
             email,
             name,
             picture,
+            token,
             msg: 'Login con Google exitoso'
         });
         
