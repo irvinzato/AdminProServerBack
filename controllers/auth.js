@@ -96,15 +96,19 @@ const googleLogin = async( req, res = response ) => {
 
 const renewToken = async( req, res = response ) => {
     //Si llega a este punto es por que ya tenemos el "uid"
-
     const uid = req.uid;
 
+    //Obtengo informacion del usuario
+    const usuarioDB = await Usuario.findById( uid );
+    //const { nombre, email, rol, img } = usuarioDB;
+  
     //Generación del TOKEN - JWT
     const token = await generarJWT( uid );
 
     res.json({
         ok: true,
         uid,
+        usuarioDB,
         token,
         msg: 'Verificación de token correcta'
     });

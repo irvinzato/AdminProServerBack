@@ -91,6 +91,8 @@ const actualizarUsuario = async (req, res = response) => {
 
         //Actualizaciones
         const campos = req.body;
+        delete campos.password; //Borro todo lo que no quiero actualizar, por si me mandan el password
+        delete campos.google; //Borro todo lo que no quiero actualizar
         if( usuarioDB.email === req.body.email ) {
             delete campos.email;
         } else {
@@ -102,8 +104,14 @@ const actualizarUsuario = async (req, res = response) => {
                 });
             }
         }
-        delete campos.password; //Borro todo lo que no quiero actualizar, por si me mandan el password
-        delete campos.google; //Borro todo lo que no quiero actualizar
+
+        //Si es un usuario de Google no debe poder cambiar el correo
+        if( usuarioDB.google && campos.email ) {
+            return res.json({
+                ok: false,
+                msg: 'No se puede actualizar el correo electronico de un usuario de Google'
+            });
+        }
 
         const usuarioActualizado = await Usuario.findByIdAndUpdate( uid, campos, { new: true} );
 
