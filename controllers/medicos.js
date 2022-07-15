@@ -129,9 +129,33 @@ const borrarMedico = async (req, res = response) => {
 
 }
 
+const getMedicoById = async (req, res = response) => {
+
+    const medicoId = req.params.id;
+
+    try {              
+        const medico = await Medico.findById(medicoId) //Con el populate puedo obtener mas campos para esa variable
+                                    .populate('usuario', 'nombre img')
+                                    .populate('hospital', 'nombre img');
+
+        res.json({
+            ok: true,
+            medico,
+            msg: 'Petición exitosa'
+        });
+    } catch (error) {
+        console.log("Error en getMedicoById ", error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, hable con el administrador'
+        });
+    }
+}
+
 module.exports = {
     getMedicos,
     crearMedico,
     actualizarMedico,
-    borrarMedico
+    borrarMedico,
+    getMedicoById
 }
