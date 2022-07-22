@@ -5,7 +5,7 @@ const { Router } = require('express');
 const { check } = require('express-validator'); //"npm i express-validator" para hacer uso de esta importacion
 const { validarCampos } = require('../middlewares/validar.campos');
 const { getUsuarios, crearUsuarios, actualizarUsuario, borrarUsuario } = require('../controllers/usuarios');
-const { validarJWT } = require('../middlewares/validar-jwt');
+const { validarJWT, validarADMIN_ROLE } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
@@ -16,9 +16,9 @@ router.get( '/',
     getUsuarios 
 );
 
-router.post( 
-    '/', 
+router.post( '/', 
     [ 
+        validarJWT,
         check('nombre', 'El nombre es obligatorio').not().isEmpty(),
         check('password', 'El password es obligatorio').not().isEmpty(),
         check('email', 'El email es obligatorio').isEmail(),
@@ -30,6 +30,7 @@ router.post(
  router.put( '/:id', 
     [
         validarJWT,
+        validarADMIN_ROLE,
         check('nombre', 'El nombre es obligatorio').not().isEmpty(),
         check('email', 'El email es obligatorio').isEmail(),
         check('rol', 'El rol es obligatorio').not().isEmpty(),
@@ -40,7 +41,8 @@ router.post(
 
  router.delete( '/:id',
     [
-        validarJWT
+        validarJWT,
+        validarADMIN_ROLE
     ],
     borrarUsuario
 );
