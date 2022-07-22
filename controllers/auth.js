@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs'); //"npm i bcryptjs" pasa hacer uso de libreri
 const Usuario = require('../models/usuario');
 const { generarJWT } = require('../helpers/jwt');
 const { googleVerify } = require('../helpers/google-verify');
+const { getMenuFrontEnd } = require('../helpers/menu-frontend');
 
 const login = async( req, res = response ) => {
 
@@ -34,7 +35,8 @@ const login = async( req, res = response ) => {
         res.json({
             ok: true,
             msg: 'Todo bien',
-            token
+            token,
+            menu: getMenuFrontEnd( usuarioDB.rol )
         });
         
     } catch (error) {
@@ -82,6 +84,7 @@ const googleLogin = async( req, res = response ) => {
             name,
             picture,
             token,
+            menu: getMenuFrontEnd( usuario.rol ),
             msg: 'Login con Google exitoso'
         });
         
@@ -110,6 +113,7 @@ const renewToken = async( req, res = response ) => {
         uid,
         usuarioDB,
         token,
+        menu: getMenuFrontEnd( usuarioDB.rol ),
         msg: 'Verificación de token correcta'
     });
 
